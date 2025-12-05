@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +19,7 @@
         }
 
         .slot-machine-container {
-            box-shadow: 0 0 50px rgba(239, 68, 68, 0.2), inset 0 0 20px rgba(0,0,0,0.8);
+            box-shadow: 0 0 50px rgba(239, 68, 68, 0.2), inset 0 0 20px rgba(0, 0, 0, 0.8);
             background: linear-gradient(145deg, #1f2937, #0f131a);
             border: 2px solid #374151;
             transition: all 0.3s ease;
@@ -31,18 +32,25 @@
         }
 
         @keyframes glow {
-            from { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
-            to { box-shadow: 0 0 60px rgba(251, 191, 36, 0.7), 0 0 20px rgba(251, 191, 36, 0.3); }
+            from {
+                box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+            }
+
+            to {
+                box-shadow: 0 0 60px rgba(251, 191, 36, 0.7), 0 0 20px rgba(251, 191, 36, 0.3);
+            }
         }
 
         .btn-3d {
             transition: all 0.1s;
             box-shadow: 0px 5px 0px 0px #7f1d1d;
         }
+
         .btn-3d:active {
             transform: translateY(5px);
             box-shadow: 0px 0px 0px 0px #7f1d1d;
         }
+
         .btn-3d:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -61,13 +69,31 @@
         }
 
         /* Modal & Scrollbar */
-        .modal { transition: opacity 0.25s ease; }
-        body.modal-active { overflow-x: hidden; overflow-y: visible !important; }
-        
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #1f2937; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+
+        body.modal-active {
+            overflow-x: hidden;
+            overflow-y: visible !important;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
 
         .sound-wave {
             display: inline-flex;
@@ -75,20 +101,42 @@
             height: 20px;
             gap: 2px;
         }
+
         .bar {
             width: 3px;
             background-color: #fbbf24;
             animation: wave 1s ease-in-out infinite;
         }
-        .bar:nth-child(2) { animation-delay: 0.1s; height: 10px; }
-        .bar:nth-child(3) { animation-delay: 0.2s; height: 15px; }
-        .bar:nth-child(4) { animation-delay: 0.3s; height: 8px; }
+
+        .bar:nth-child(2) {
+            animation-delay: 0.1s;
+            height: 10px;
+        }
+
+        .bar:nth-child(3) {
+            animation-delay: 0.2s;
+            height: 15px;
+        }
+
+        .bar:nth-child(4) {
+            animation-delay: 0.3s;
+            height: 8px;
+        }
+
         @keyframes wave {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(1.5); }
+
+            0%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            50% {
+                transform: scaleY(1.5);
+            }
         }
     </style>
 </head>
+
 <body class="text-white min-h-screen flex flex-col items-center p-4 overflow-hidden relative">
 
     <canvas id="confetti-canvas"></canvas>
@@ -96,35 +144,45 @@
     <!-- Header & Settings -->
     <header class="w-full max-w-6xl flex justify-between items-center mb-12 mt-10 relative z-20 px-4">
         <!-- Sound Toggle -->
-        <button id="btn-sound" onclick="toggleSound()" class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 py-2 px-4 rounded-full border border-gray-600 transition-colors text-sm font-bold text-gray-300">
+        <button id="btn-sound" onclick="toggleSound()"
+            class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 py-2 px-4 rounded-full border border-gray-600 transition-colors text-sm font-bold text-gray-300">
             <span id="sound-icon">🔊</span>
             <span id="sound-text">Bật Tiếng</span>
         </button>
 
         <div class="text-center absolute left-1/2 transform -translate-x-1/2 w-full pointer-events-none">
-             <h1 class="leading-loose text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-yellow-400 uppercase tracking-wider drop-shadow-lg pointer-events-auto inline-block">
+            <h1
+                class="leading-loose text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-yellow-400 uppercase tracking-wider drop-shadow-lg pointer-events-auto inline-block">
                 Vòng Quay May Mắn
             </h1>
         </div>
 
         <!-- Settings Button -->
-        <button onclick="toggleModal()" class="bg-gray-800 hover:bg-gray-700 p-3 rounded-full border border-gray-600 transition-colors" title="Cấu hình Google Sheet">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <button onclick="toggleModal()"
+            class="bg-gray-800 hover:bg-gray-700 p-3 rounded-full border border-gray-600 transition-colors"
+            title="Cấu hình Google Sheet">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
         </button>
     </header>
 
     <!-- Main Game Area -->
     <div class="relative z-10 w-full grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
-        
+
         <!-- Left: Slot Machine -->
         <div class="lg:col-span-2 flex flex-col items-center">
-            <div id="slot-box" class="slot-machine-container rounded-3xl p-8 w-full h-[350px] flex flex-col items-center justify-center relative overflow-hidden mb-8 border-4 border-gray-700">
+            <div id="slot-box"
+                class="slot-machine-container rounded-3xl p-8 w-full h-[350px] flex flex-col items-center justify-center relative overflow-hidden mb-8 border-4 border-gray-700">
                 <!-- Decorative Elements -->
-                <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-20"></div>
-                
+                <div
+                    class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-20">
+                </div>
+
                 <div class="absolute top-4 left-4 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                 <div class="absolute top-4 right-4 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                 <div class="absolute bottom-4 left-4 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
@@ -132,19 +190,24 @@
 
                 <!-- Display Area -->
                 <div class="text-center w-full z-10">
-                    <div class="text-gray-500 text-xs md:text-sm uppercase tracking-[0.3em] mb-6 font-bold flex justify-center items-center gap-2">
-                        <span class="w-8 h-[1px] bg-gray-600"></span> MÃ SỐ MAY MẮN <span class="w-8 h-[1px] bg-gray-600"></span>
+                    <div
+                        class="text-gray-500 text-xs md:text-sm uppercase tracking-[0.3em] mb-6 font-bold flex justify-center items-center gap-2">
+                        <span class="w-8 h-[1px] bg-gray-600"></span> MÃ SỐ MAY MẮN <span
+                            class="w-8 h-[1px] bg-gray-600"></span>
                     </div>
-                    
-                    <div id="display-code" class="mono-font text-6xl md:text-8xl font-black text-white tracking-widest transition-all min-h-[100px] flex items-center justify-center filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+
+                    <div id="display-code"
+                        class="mono-font text-6xl md:text-8xl font-black text-white tracking-widest transition-all min-h-[100px] flex items-center justify-center filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                         -----
                     </div>
-                    
+
                     <div class="mt-6 h-20 flex flex-col justify-center">
-                        <div id="display-name" class="text-2xl md:text-4xl text-yellow-400 font-bold opacity-0 transition-opacity duration-300 truncate px-4 drop-shadow-md">
+                        <div id="display-name"
+                            class="text-2xl md:text-4xl text-yellow-400 font-bold opacity-0 transition-opacity duration-300 truncate px-4 drop-shadow-md">
                             <!-- Tên nhân viên -->
                         </div>
-                        <div id="display-dept" class="text-gray-400 text-sm md:text-base font-medium opacity-0 transition-opacity duration-300 mt-1">
+                        <div id="display-dept"
+                            class="text-gray-400 text-sm md:text-base font-medium opacity-0 transition-opacity duration-300 mt-1">
                             <!-- Phòng ban -->
                         </div>
                     </div>
@@ -154,38 +217,53 @@
             <!-- Controls -->
             <div class="flex flex-col items-center gap-4 w-full">
                 <div class="flex gap-4 w-full justify-center max-w-md">
-                    <button id="btn-spin" onclick="startSpin()" class="btn-3d bg-gradient-to-b from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 text-white font-bold py-5 px-10 rounded-2xl text-2xl uppercase tracking-wider flex-grow disabled:filter disabled:grayscale shadow-lg transform transition-transform">
+                    <button id="btn-spin" onclick="startSpin()"
+                        class="btn-3d bg-gradient-to-b from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 text-white font-bold py-5 px-10 rounded-2xl text-2xl uppercase tracking-wider flex-grow disabled:filter disabled:grayscale shadow-lg transform transition-transform">
                         QUAY SỐ
                     </button>
-                    
-                    <button onclick="resetData()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-2xl transition-colors border-2 border-gray-600 flex items-center justify-center shadow-lg" title="Reset danh sách">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+
+                    <button onclick="resetData()"
+                        class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-2xl transition-colors border-2 border-gray-600 flex items-center justify-center shadow-lg"
+                        title="Reset danh sách">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-300" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                         </svg>
                     </button>
                 </div>
-                
-                <div class="text-gray-500 text-sm bg-gray-900/80 py-2 px-6 rounded-full border border-gray-700 backdrop-blur-sm">
-                    Trong danh sách: <span id="count-remaining" class="text-white font-bold text-lg mx-1">0</span> nhân viên
+
+                <div
+                    class="text-gray-500 text-sm bg-gray-900/80 py-2 px-6 rounded-full border border-gray-700 backdrop-blur-sm">
+                    Trong danh sách: <span id="count-remaining" class="text-white font-bold text-lg mx-1">0</span> nhân
+                    viên
                 </div>
             </div>
         </div>
 
         <!-- Right: Winners History -->
-        <div class="bg-gray-800/40 backdrop-blur-xl rounded-2xl border border-gray-700 p-6 flex flex-col h-[500px] shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-50"></div>
-            
+        <div
+            class="bg-gray-800/40 backdrop-blur-xl rounded-2xl border border-gray-700 p-6 flex flex-col h-[500px] shadow-2xl relative overflow-hidden">
+            <div
+                class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-50">
+            </div>
+
             <h2 class="text-xl font-bold text-yellow-400 mb-6 flex items-center gap-3">
                 <div class="bg-yellow-400/10 p-2 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                     </svg>
                 </div>
                 Lịch Sử Trúng Thưởng
             </h2>
             <div id="winners-list" class="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
                 <div class="text-gray-500 text-center italic mt-20 flex flex-col items-center opacity-50">
-                    <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
                     <span>Chưa có ai trúng thưởng</span>
                 </div>
             </div>
@@ -193,16 +271,22 @@
     </div>
 
     <!-- Modal Settings -->
-    <div id="modal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
+    <div id="modal"
+        class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
         <div class="modal-overlay absolute w-full h-full bg-black/80 backdrop-blur-sm" onclick="toggleModal()"></div>
-        
-        <div class="modal-container bg-gray-800 w-11/12 md:max-w-lg mx-auto rounded-2xl shadow-2xl z-50 overflow-y-auto border border-gray-600 transform scale-95 transition-transform duration-300" id="modal-content">
+
+        <div class="modal-container bg-gray-800 w-11/12 md:max-w-lg mx-auto rounded-2xl shadow-2xl z-50 overflow-y-auto border border-gray-600 transform scale-95 transition-transform duration-300"
+            id="modal-content">
             <div class="modal-content py-6 text-left px-8">
                 <div class="flex justify-between items-center pb-4 border-b border-gray-700 mb-4">
                     <p class="text-2xl font-bold text-white">Nguồn Dữ Liệu</p>
-                    <div class="modal-close cursor-pointer z-50 hover:bg-gray-700 p-2 rounded-full transition-colors" onclick="toggleModal()">
-                        <svg class="fill-current text-gray-300" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18">
-                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    <div class="modal-close cursor-pointer z-50 hover:bg-gray-700 p-2 rounded-full transition-colors"
+                        onclick="toggleModal()">
+                        <svg class="fill-current text-gray-300" xmlns="http://www.w3.org/2000/svg" width="20"
+                            height="20" viewBox="0 0 18 18">
+                            <path
+                                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+                            </path>
                         </svg>
                     </div>
                 </div>
@@ -217,12 +301,19 @@
                         </ol>
                     </div>
 
-                    <input type="text" id="sheet-url" placeholder="Dán link CSV của Google Sheet vào đây..." 
+                    <input type="text" id="sheet-url" placeholder="Dán link CSV của Google Sheet vào đây..."
                         class="w-full p-4 bg-gray-900 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 text-sm transition-all">
-                    
+
                     <div id="status-area" class="min-h-[20px]">
                         <p id="loading-msg" class="text-yellow-400 text-sm hidden flex items-center gap-2">
-                            <svg class="animate-spin h-4 w-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <svg class="animate-spin h-4 w-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
                             Đang tải dữ liệu...
                         </p>
                         <p id="error-msg" class="text-red-400 text-sm hidden"></p>
@@ -230,8 +321,12 @@
                 </div>
 
                 <div class="flex justify-end pt-6 gap-3">
-                    <button onclick="useSampleData()" class="px-4 py-2 text-gray-400 hover:text-white text-sm font-medium transition-colors">Dùng mẫu thử</button>
-                    <button onclick="saveAndLoadSheet()" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg hover:from-blue-500 hover:to-blue-400 font-bold shadow-lg transform active:scale-95 transition-all">Lưu & Tải Dữ Liệu</button>
+                    <button onclick="useSampleData()"
+                        class="px-4 py-2 text-gray-400 hover:text-white text-sm font-medium transition-colors">Dùng mẫu
+                        thử</button>
+                    <button onclick="saveAndLoadSheet()"
+                        class="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg hover:from-blue-500 hover:to-blue-400 font-bold shadow-lg transform active:scale-95 transition-all">Lưu
+                        & Tải Dữ Liệu</button>
                 </div>
             </div>
         </div>
@@ -243,7 +338,7 @@
             ctx: null,
             enabled: true, // Default ON
 
-            init: function() {
+            init: function () {
                 if (!this.ctx) {
                     const AudioContext = window.AudioContext || window.webkitAudioContext;
                     this.ctx = new AudioContext();
@@ -255,9 +350,9 @@
             },
 
             // Sound 1: Mechanical Tick (Tiếng lạch cạch khi quay)
-            playTick: function() {
+            playTick: function () {
                 if (!this.enabled || !this.ctx) return;
-                
+
                 const osc = this.ctx.createOscillator();
                 const gainNode = this.ctx.createGain();
 
@@ -265,7 +360,7 @@
                 gainNode.connect(this.ctx.destination);
 
                 // High pitch short blip
-                osc.type = 'triangle'; 
+                osc.type = 'triangle';
                 osc.frequency.setValueAtTime(800, this.ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.05);
 
@@ -277,30 +372,30 @@
             },
 
             // Sound 2: Winner Sound (Tiếng chuông thắng cuộc)
-            playWin: function() {
+            playWin: function () {
                 if (!this.enabled || !this.ctx) return;
 
                 const now = this.ctx.currentTime;
-                
+
                 // Tạo hợp âm C Major (Đô trưởng) arpeggio
                 const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-                
+
                 notes.forEach((freq, i) => {
                     const osc = this.ctx.createOscillator();
                     const gain = this.ctx.createGain();
-                    
+
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);
-                    
+
                     osc.type = 'sine';
                     osc.frequency.value = freq;
-                    
+
                     const startTime = now + (i * 0.1);
-                    
+
                     gain.gain.setValueAtTime(0, startTime);
                     gain.gain.linearRampToValueAtTime(0.4, startTime + 0.05);
                     gain.gain.exponentialRampToValueAtTime(0.01, startTime + 1.5);
-                    
+
                     osc.start(startTime);
                     osc.stop(startTime + 1.5);
                 });
@@ -312,7 +407,7 @@
             const btn = document.getElementById('sound-text');
             const icon = document.getElementById('sound-icon');
             const btnEl = document.getElementById('btn-sound');
-            
+
             if (AudioEngine.enabled) {
                 btn.innerText = "Bật Tiếng";
                 icon.innerText = "🔊";
@@ -332,23 +427,22 @@
             { id: "HR-02", name: "Trần Thị Tuyển", dept: "Phòng Nhân Sự" },
             { id: "SALE-03", name: "Lê Văn Chốt", dept: "Phòng Kinh Doanh" },
             { id: "ACC-04", name: "Phạm Thị Tiền", dept: "Phòng Kế Toán" },
-            { id: "MKT-05", name: "Hoàng Đức Viral", dept: "Phòng Marketing" },
-            { id: "BOD-99", name: "Lão Đại", dept: "Ban Giám Đốc" }
+            { id: "MKT-05", name: "Hoàng Đức Viral", dept: "Phòng Marketing" }
         ];
 
-        let employees = []; 
+        let employees = [];
         let originalEmployees = [];
         let isSpinning = false;
         let spinInterval;
 
-        window.onload = function() {
+        window.onload = function () {
             const savedUrl = localStorage.getItem('luckyDraw_sheetUrl');
             if (savedUrl) {
                 document.getElementById('sheet-url').value = savedUrl;
                 loadFromUrl(savedUrl);
             } else {
                 useSampleData();
-                toggleModal(); 
+                toggleModal();
             }
         };
 
@@ -356,11 +450,11 @@
             const body = document.querySelector('body');
             const modal = document.querySelector('.modal');
             const content = document.getElementById('modal-content');
-            
+
             modal.classList.toggle('opacity-0');
             modal.classList.toggle('pointer-events-none');
             body.classList.toggle('modal-active');
-            
+
             if (!modal.classList.contains('opacity-0')) {
                 content.classList.remove('scale-95');
                 content.classList.add('scale-100');
@@ -409,7 +503,7 @@
 
         function parseCSV(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line);
-            if (lines.length < 2) return []; 
+            if (lines.length < 2) return [];
             const result = [];
             for (let i = 1; i < lines.length; i++) {
                 const cols = lines[i].split(',');
@@ -461,12 +555,12 @@
             const box = document.getElementById('slot-box');
             box.classList.remove('winner-glow', 'border-yellow-400');
             box.classList.add('border-gray-700');
-            
+
             const dCode = document.getElementById('display-code');
             dCode.innerText = "-----";
             dCode.classList.remove('text-yellow-400', 'scale-110');
             dCode.classList.add('text-white');
-            
+
             document.getElementById('display-name').style.opacity = '0';
             document.getElementById('display-dept').style.opacity = '0';
         }
@@ -485,19 +579,19 @@
             const btn = document.getElementById('btn-spin');
             btn.disabled = true;
             btn.innerText = "ĐANG QUAY...";
-            
-            resetVisuals(); 
+
+            resetVisuals();
 
             // Hiệu ứng chạy số nhanh
-            let speed = 50; 
-            
+            let speed = 50;
+
             spinInterval = setInterval(() => {
                 const randomEmp = employees[Math.floor(Math.random() * employees.length)];
                 document.getElementById('display-code').innerText = randomEmp.id;
-                
+
                 // PLAY SOUND ON TICK
                 AudioEngine.playTick();
-                
+
             }, speed);
 
             setTimeout(() => {
@@ -521,7 +615,7 @@
 
             // Gọi đệ quy với delay tăng dần
             setTimeout(() => {
-                slowDown(delay * 1.15); 
+                slowDown(delay * 1.15);
             }, delay);
         }
 
@@ -542,7 +636,7 @@
             displayCode.classList.add('text-yellow-400', 'scale-110');
             displayName.style.opacity = '1';
             displayDept.style.opacity = '1';
-            
+
             box.classList.remove('border-gray-700');
             box.classList.add('winner-glow', 'border-yellow-400');
 
@@ -564,7 +658,7 @@
         function addToHistory(winner) {
             const list = document.getElementById('winners-list');
             // Remove empty placeholder if exists
-            if(list.children[0] && list.children[0].classList.contains('text-gray-500')) {
+            if (list.children[0] && list.children[0].classList.contains('text-gray-500')) {
                 list.innerHTML = '';
             }
 
@@ -619,7 +713,7 @@
                 p.vy += p.grav;
                 p.vx *= p.drag;
                 p.vy *= p.drag;
-                
+
                 ctx.fillStyle = p.color;
                 ctx.fillRect(p.x, p.y, p.w, p.h);
                 if (p.y > canvas.height || p.vx < 0.1 && p.vx > -0.1) confettiParticles.splice(index, 1);
@@ -628,4 +722,5 @@
         }
     </script>
 </body>
+
 </html>
