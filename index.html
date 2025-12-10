@@ -134,6 +134,10 @@
                 transform: scaleY(1.5);
             }
         }
+
+        .slot-machine-container {
+            height: calc(100dvh - 350px);
+        }
     </style>
 </head>
 
@@ -142,10 +146,10 @@
     <canvas id="confetti-canvas"></canvas>
 
     <!-- Header & Settings -->
-    <header class="w-full max-w-6xl flex justify-between items-center mb-12 mt-10 relative z-20 px-4">
+    <header class="w-full max-w-6xl flex justify-between items-center mb-12 mt-10 relative z-20 px-4" style="height: 50px;">
         <!-- Sound Toggle -->
         <button id="btn-sound" onclick="toggleSound()"
-            class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 py-2 px-4 rounded-full border border-gray-600 transition-colors text-sm font-bold text-gray-300">
+            class="control-view flex items-center gap-2 bg-gray-800 hover:bg-gray-700 py-2 px-4 rounded-full border border-gray-600 transition-colors text-sm font-bold text-gray-300">
             <span id="sound-icon">🔊</span>
             <span id="sound-text">Bật Tiếng</span>
         </button>
@@ -159,7 +163,7 @@
 
         <!-- Settings Button -->
         <button onclick="toggleModal()"
-            class="bg-gray-800 hover:bg-gray-700 p-3 rounded-full border border-gray-600 transition-colors"
+            class="control-view bg-gray-800 hover:bg-gray-700 p-3 rounded-full border border-gray-600 transition-colors"
             title="Cấu hình Google Sheet">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -172,19 +176,19 @@
     </header>
 
     <!-- Main Game Area -->
-    <div class="relative z-10 w-full grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
+    <div class="relative z-10 w-full grid grid-cols-1 grid-cols-3 gap-8 mt-4">
 
         <!-- Left: Slot Machine -->
-        <div class="lg:col-span-2 flex flex-col items-center">
+        <div id="slot-machine-main" class="col-span-2 flex flex-col items-center">
             <div id="slot-box"
-                class="slot-machine-container rounded-3xl p-8 w-full h-[350px] flex flex-col items-center justify-center relative overflow-hidden mb-8 border-4 border-gray-700">
+                class="slot-machine-container rounded-3xl p-8 w-full flex flex-col items-center justify-center relative overflow-hidden mb-8 border-4 border-gray-700">
                 <!-- Decorative Elements -->
                 <div
                     class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-20">
                 </div>
 
-                <div class="absolute top-4 left-4 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                <div class="absolute top-4 right-4 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                <div class="absolute top-4 left-4 w-2 h-2 rounded-full bg-red-500 animate-pulse" onclick="hideControlView()"></div>
+                <div class="absolute top-4 right-4 w-2 h-2 rounded-full bg-red-500 animate-pulse" onclick="showControlView()"></div>
                 <div class="absolute bottom-4 left-4 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                 <div class="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
 
@@ -223,7 +227,7 @@
                     </button>
 
                     <button onclick="resetData()"
-                        class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-2xl transition-colors border-2 border-gray-600 flex items-center justify-center shadow-lg"
+                        class="control-view bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-2xl transition-colors border-2 border-gray-600 flex items-center justify-center shadow-lg"
                         title="Reset danh sách">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-300" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
@@ -234,7 +238,7 @@
                 </div>
 
                 <div
-                    class="text-gray-500 text-sm bg-gray-900/80 py-2 px-6 rounded-full border border-gray-700 backdrop-blur-sm">
+                    class="control-view text-gray-500 text-sm bg-gray-900/80 py-2 px-6 rounded-full border border-gray-700 backdrop-blur-sm">
                     Trong danh sách: <span id="count-remaining" class="text-white font-bold text-lg mx-1">0</span> nhân
                     viên
                 </div>
@@ -243,7 +247,7 @@
 
         <!-- Right: Winners History -->
         <div
-            class="bg-gray-800/40 backdrop-blur-xl rounded-2xl border border-gray-700 p-6 flex flex-col h-[500px] shadow-2xl relative overflow-hidden">
+            class="control-view bg-gray-800/40 backdrop-blur-xl rounded-2xl border border-gray-700 p-6 flex flex-col h-[500px] shadow-2xl relative overflow-hidden">
             <div
                 class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-50">
             </div>
@@ -302,7 +306,8 @@
                     </div>
 
                     <input type="text" id="sheet-url" placeholder="Dán link CSV của Google Sheet vào đây..."
-                        class="w-full p-4 bg-gray-900 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 text-sm transition-all">
+                        class="w-full p-4 bg-gray-900 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 text-sm transition-all"
+                        value="https://docs.google.com/spreadsheets/d/1CNZGvOW9akFPnBEp2tpLfeigvyf03VXckpRXiVcLNEk/export?format=csv">
 
                     <div id="status-area" class="min-h-[20px]">
                         <p id="loading-msg" class="text-yellow-400 text-sm hidden flex items-center gap-2">
@@ -719,6 +724,22 @@
                 if (p.y > canvas.height || p.vx < 0.1 && p.vx > -0.1) confettiParticles.splice(index, 1);
             });
             if (confettiParticles.length > 0) requestAnimationFrame(updateConfetti);
+        }
+
+        function hideControlView() {
+            document.querySelectorAll(".control-view").forEach(element => {
+                element.style.display = "none";
+                document.getElementById("slot-machine-main").classList.remove("col-span-2");
+                document.getElementById("slot-machine-main").classList.add("col-span-3");
+            });
+        }
+
+        function showControlView() {
+            document.querySelectorAll(".control-view").forEach(element => {
+                element.style.display = "";
+                document.getElementById("slot-machine-main").classList.remove("col-span-3");
+                document.getElementById("slot-machine-main").classList.add("col-span-2");
+            });
         }
     </script>
 </body>
